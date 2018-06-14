@@ -13,6 +13,7 @@ import Actions from '../../actions/Actions';
 import {
   ajaxCall,
   trackDiscovery,
+  valueIsRightToLeft,
 } from '../../utils/utils';
 import DefinitionList from './DefinitionList';
 import appConfig from '../../../../appConfig';
@@ -209,7 +210,12 @@ class BibDetails extends React.Component {
         );
       }
 
-      return <span>{bibValue}</span>;
+      // Check first byte to determine display direction:
+      const dir = valueIsRightToLeft(bibValue) ? 'rtl' : 'ltr';
+      const classes = [];
+      if (dir === 'rtl') classes.push('right-to-left');
+
+      return <span className={classes} dir={dir}>{bibValue}</span>;
     }
 
     return (
@@ -225,6 +231,12 @@ class BibDetails extends React.Component {
                 {value}
               </Link>)
               : <span>{value}</span>;
+
+            // Check first byte to determine display direction:
+            const dir = valueIsRightToLeft(value) ? 'rtl' : 'ltr';
+            const classes = [];
+            if (dir === 'rtl') classes.push('right-to-left');
+
             if (fieldSelfLinkable) {
               itemValue = (
                 <a
@@ -235,7 +247,7 @@ class BibDetails extends React.Component {
                 </a>);
             }
 
-            return (<li key={i}>{itemValue}</li>);
+            return (<li key={i.toString()} dir={dir} className={classes}>{itemValue}</li>);
           })
         }
       </ul>

@@ -10,3 +10,13 @@
     margin-right: -10px;
   }
 }
+
+.right-to-left {
+  direction: rtl;
+  text-align: right;
+}
+
+span.right-to-left {
+  display: block;
+  width: auto;
+}

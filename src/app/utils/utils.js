@@ -361,6 +361,16 @@ const getUpdatedFilterValues = (props) => {
   return updatedFilterValues;
 };
 
+/**
+ * valueIsRightToLeft(value)
+ *
+ * Examine first byte of string for direction flag. Right-to-left values are
+ * indexed with a leading '\u200f'.
+ *
+ * @returns {boolean} True if value should be displayed right-to-left
+ */
+const valueIsRightToLeft = value => (typeof value) === 'string' && value[0] === '\u200f';
+
 export {
   trackDiscovery,
   ajaxCall,
@@ -375,4 +385,5 @@ export {
   parseServerSelectedFilters,
   getAggregatedElectronicResources,
   getUpdatedFilterValues,
+  valueIsRightToLeft,
 };
