@@ -1,9 +1,9 @@
+import fetchForSubjectHeadingIndex from '../app/actions/SubjectHeading/SubjectHeadingIndex';
+
 const routeActions = [
   [
-    /.*subject_headings/,
-    () => {
-      
-    }
+    /.*subject_headings$/,
+    fetchForSubjectHeadingIndex,
   ],
 ];
 

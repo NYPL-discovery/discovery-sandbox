@@ -42,6 +42,7 @@ function fetchForSubjectHeadingIndex(location) {
   },
   ).then(
     (res) => {
+      console.log('done fetching')
       Actions.updateSubjectHeadingIndex({
         previousUrl: res.data.previous_url,
         nextUrl: res.data.next_url,

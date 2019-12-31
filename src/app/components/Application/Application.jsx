@@ -15,6 +15,7 @@ import {
 } from '../../utils/utils';
 import Actions from '../../actions/Actions';
 import appConfig from '../../../../appConfig';
+import routeActions from '../../../routeActions/routeActions';
 
 class App extends React.Component {
   constructor(props) {
@@ -39,6 +40,15 @@ class App extends React.Component {
   componentDidMount() {
     Store.listen(this.onChange);
     // Listen to the browser's navigation buttons.
+    this.props.route.history.listen((location = { pathname: '' }) => {
+      console.log('first', routeActions)
+      const pathname = location.pathname;
+      routeActions.forEach((pair) => {
+        const [route, action] = pair;
+        console.log('matching ', pathname, route, pathname.match(route))
+        if (pathname.match(route)) action(location)
+      });
+    })
     this.props.route.history.listen((location = { action: '', search: '', query: {} }) => {
       console.log('history activity: ', location)
       const {
