@@ -83,6 +83,7 @@ class SubjectHeadingsContainer extends React.Component {
   // }
 
   componentDidMount() {
+    window.store = Store;
     Store.listen(this.onChange);
     // fetchForSubjectHeadingIndex(this.props.location);
   }

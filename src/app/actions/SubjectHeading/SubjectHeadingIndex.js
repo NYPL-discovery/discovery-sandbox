@@ -65,6 +65,9 @@ const subjectHeadingIndexFetcher = {
   client: location =>
     fetchForSubjectHeadingIndex(location)
       .then(res => Actions.updateSubjectHeadingIndex(res)),
+  server: location =>
+    fetchForSubjectHeadingIndex(location)
+      .then(res => ({ subjectHeadingIndex: res })),
 };
 
 export default subjectHeadingIndexFetcher;

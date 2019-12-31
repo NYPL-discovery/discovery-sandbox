@@ -29,6 +29,7 @@ const VIEWS_PATH = path.resolve(ROOT_PATH, 'src/views');
 const WEBPACK_DEV_PORT = appConfig.webpackDevServerPort || 3000;
 const isProduction = process.env.NODE_ENV === 'production';
 const app = express();
+let store;
 
 app.use(compress());
 
@@ -68,8 +69,22 @@ nyplApiClient();
 app.use('/*', initializePatronTokenAuth, getPatronData);
 app.use('/', apiRoutes);
 
+app.get('/*', (req, res, next) => {
+  console.log('req ', req)
+  const callbacks = routeActions.map((pair) => {
+    const [route, action] = pair;
+    return req.url.match(route) ? action.server(req) : () => {};
+  });
+  Promise.all(callbacks).then((values) => {
+    store = values.reduce((acc, value) => Object.assign(acc, value), {});
+    next();
+  });
+});
+
 app.get('/*', (req, res) => {
-  alt.bootstrap(JSON.stringify(res.locals.data || {}));
+  console.log('store ', store)
+  alt.bootstrap(JSON.stringify({ Store: store} ));
+  // alt.bootstrap(JSON.stringify(res.locals.data || {}));
 
   const appRoutes = (req.url).indexOf(appConfig.baseUrl) !== -1 ? routes().client : routes().server;
 
@@ -82,8 +97,9 @@ app.get('/*', (req, res) => {
       const application = ReactDOMServer.renderToString(<RouterContext {...renderProps} />);
       const title = DocumentTitle.rewind();
       const iso = new Iso();
-
-      iso.add(application, alt.flush());
+      const flushed = alt.flush();
+      console.log('flush: ', flushed)
+      iso.add(application, flushed);
       res
         .status(200)
         .render('index', {
