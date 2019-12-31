@@ -20,6 +20,7 @@ class Store {
       updateDeliveryLocations: Actions.updateDeliveryLocations,
       updateIsEddRequestable: Actions.updateIsEddRequestable,
       updateSubjectHeading: Actions.updateSubjectHeading,
+      updateSubjectHeadingIndex: Actions.updateSubjectHeadingIndex,
     });
 
     this.state = {
@@ -43,6 +44,7 @@ class Store {
       deliveryLocations: [],
       isEddRequestable: false,
       subjectHeading: null,
+      subjectHeadingIndex: {},
     };
   }
 
@@ -106,6 +108,10 @@ class Store {
 
   updateSubjectHeading(data) {
     this.setState({ subjectHeading: data });
+  }
+
+  updateSubjectHeadingIndex(data) {
+    this.setState({ subjectHeadingIndex: data });
   }
 }
 

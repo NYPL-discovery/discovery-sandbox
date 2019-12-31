@@ -40,6 +40,7 @@ class App extends React.Component {
     Store.listen(this.onChange);
     // Listen to the browser's navigation buttons.
     this.props.route.history.listen((location = { action: '', search: '', query: {} }) => {
+      console.log('history activity: ', location)
       const {
         action,
         search,

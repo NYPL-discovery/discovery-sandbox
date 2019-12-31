@@ -10,74 +10,90 @@ import SortButton from './SortButton';
 import appConfig from '../../../../appConfig';
 import LoadingLayer from '../LoadingLayer/LoadingLayer';
 import Pagination from '../Pagination/Pagination';
-
+import Store from '../../stores/Store';
+import fetchForSubjectHeadingIndex from '../../actions/SubjectHeading/SubjectHeadingIndex';
 
 class SubjectHeadingsContainer extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
+    this.state = Object.assign({
       error: false,
       loading: true,
-    };
+    }, Store.getState().subjectHeadingIndex);
     this.pagination = this.pagination.bind(this);
     this.redirectTo = this.redirectTo.bind(this);
     this.updateSort = this.updateSort.bind(this);
     this.updatePage = this.updatePage.bind(this);
+    this.onChange = this.onChange.bind(this);
   }
 
+  // componentDidMount() {
+  //   let {
+  //     fromLabel,
+  //     fromComparator,
+  //     filter,
+  //     sortBy,
+  //     fromAttributeValue,
+  //   } = this.props.location.query;
+  //
+  //   if (!fromComparator) fromComparator = filter ? null : "start"
+  //   if (!fromLabel) fromLabel = filter ? null : "Aac"
+  //
+  //   const apiParamHash = {
+  //     from_comparator: fromComparator,
+  //     from_label: fromLabel,
+  //     filter,
+  //     sort_by: sortBy,
+  //     from_attribute_value: fromAttributeValue,
+  //   };
+  //
+  //   const apiParamString = Object
+  //     .entries(apiParamHash)
+  //     .map(([key, value]) => (value ? `${key}=${value}` : null))
+  //     .filter(pair => pair)
+  //     .join('&');
+  //
+  //   axios({
+  //     method: 'GET',
+  //     url: `${appConfig.shepApi}/subject_headings?${apiParamString}`,
+  //     crossDomain: true,
+  //     headers: {
+  //       'Access-Control-Allow-Origin': '*',
+  //       'Content-Type': 'application/json',
+  //     },
+  //   },
+  //   ).then(
+  //     (res) => {
+  //       this.setState({
+  //         previousUrl: res.data.previous_url,
+  //         nextUrl: res.data.next_url,
+  //         subjectHeadings: res.data.subject_headings,
+  //         error: res.data.subject_headings.length === 0,
+  //         loading: false
+  //       });
+  //     },
+  //   ).catch(
+  //     (err) => {
+  //       console.log('error: ', err);
+  //       if (!this.state.subjectHeadings || this.state.subjectHeadings.length === 0) {
+  //         this.setState({ error: true });
+  //       }
+  //     },
+  //   );
+  // }
+
   componentDidMount() {
-    let {
-      fromLabel,
-      fromComparator,
-      filter,
-      sortBy,
-      fromAttributeValue,
-    } = this.props.location.query;
+    Store.listen(this.onChange);
+    fetchForSubjectHeadingIndex(this.props.location);
+  }
 
-    if (!fromComparator) fromComparator = filter ? null : "start"
-    if (!fromLabel) fromLabel = filter ? null : "Aac"
+  componentWillUnmount() {
+    Store.unlisten(this.onChange);
+  }
 
-    const apiParamHash = {
-      from_comparator: fromComparator,
-      from_label: fromLabel,
-      filter,
-      sort_by: sortBy,
-      from_attribute_value: fromAttributeValue,
-    };
-
-    const apiParamString = Object
-      .entries(apiParamHash)
-      .map(([key, value]) => (value ? `${key}=${value}` : null))
-      .filter(pair => pair)
-      .join('&');
-
-    axios({
-      method: 'GET',
-      url: `${appConfig.shepApi}/subject_headings?${apiParamString}`,
-      crossDomain: true,
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Content-Type': 'application/json',
-      },
-    },
-    ).then(
-      (res) => {
-        this.setState({
-          previousUrl: res.data.previous_url,
-          nextUrl: res.data.next_url,
-          subjectHeadings: res.data.subject_headings,
-          error: res.data.subject_headings.length === 0,
-          loading: false
-        });
-      },
-    ).catch(
-      (err) => {
-        console.log('error: ', err);
-        if (!this.state.subjectHeadings || this.state.subjectHeadings.length === 0) {
-          this.setState({ error: true });
-        }
-      },
-    );
+  onChange() {
+    console.log('changing: ', Store.getState().subjectHeadingIndex);
+    this.setState(Store.getState().subjectHeadingIndex)
   }
 
   extractParam(paramName, url) {
@@ -152,6 +168,7 @@ class SubjectHeadingsContainer extends React.Component {
   }
 
   render() {
+    console.log('Container state', this.state)
     const { error, subjectHeadings, loading } = this.state;
     const location = this.props.location;
     const { linked, sortBy, filter } = this.props.location.query;

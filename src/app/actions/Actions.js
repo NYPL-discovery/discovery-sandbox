@@ -61,6 +61,10 @@ class Actions {
   updateSubjectHeading(data) {
     return data;
   }
+
+  updateSubjectHeadingIndex(data) {
+    return data;
+  }
 }
 
 export default alt.createActions(Actions);
