@@ -46,7 +46,7 @@ class App extends React.Component {
       routeActions.forEach((pair) => {
         const [route, action] = pair;
         console.log('matching ', pathname, route, pathname.match(route))
-        if (pathname.match(route)) action(location)
+        if (pathname.match(route)) action.client(location)
       });
     })
     this.props.route.history.listen((location = { action: '', search: '', query: {} }) => {

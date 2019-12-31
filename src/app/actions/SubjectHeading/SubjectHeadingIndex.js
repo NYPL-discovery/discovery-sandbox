@@ -31,7 +31,7 @@ function fetchForSubjectHeadingIndex(location) {
     .filter(pair => pair)
     .join('&');
 
-  axios({
+  return axios({
     method: 'GET',
     url: `${appConfig.shepApi}/subject_headings?${apiParamString}`,
     crossDomain: true,
@@ -42,14 +42,14 @@ function fetchForSubjectHeadingIndex(location) {
   },
   ).then(
     (res) => {
-      console.log('done fetching')
-      Actions.updateSubjectHeadingIndex({
+      console.log('done fetching');
+      return {
         previousUrl: res.data.previous_url,
         nextUrl: res.data.next_url,
         subjectHeadings: res.data.subject_headings,
         error: res.data.subject_headings.length === 0,
         loading: false,
-      });
+      };
     },
   ).catch(
     (err) => {
@@ -61,4 +61,10 @@ function fetchForSubjectHeadingIndex(location) {
   );
 }
 
-export default fetchForSubjectHeadingIndex;
+const subjectHeadingIndexFetcher = {
+  client: location =>
+    fetchForSubjectHeadingIndex(location)
+      .then(res => Actions.updateSubjectHeadingIndex(res)),
+};
+
+export default subjectHeadingIndexFetcher;
