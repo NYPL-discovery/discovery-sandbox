@@ -56,7 +56,7 @@ deploy:
   bucket_path: shep-discovery-ui
   on:
     repo: NYPL-discovery/discovery-front-end
-    branch: shep-development
+    branch: react-15-development
 after_deploy: echo 'Successfully executed deploy trigger for Discovery Shared Collection
   Catalog on AWS'
 env:
