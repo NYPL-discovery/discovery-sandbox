@@ -76,8 +76,6 @@
     "webpack-dev-server": "2.7.1"
   },
   "dependencies": {
-    "@nypl/design-toolkit": "0.1.35",
-    "@nypl/dgx-header-component": "2.5.8",
     "@nypl/dgx-react-footer": "0.5.2",
     "@nypl/dgx-svg-icons": "0.2.5",
     "@nypl/nypl-data-api-client": "0.2.5",
