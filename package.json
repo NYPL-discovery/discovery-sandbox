@@ -20,7 +20,7 @@
     "deploy-development": "eb deploy discovery-ui-development --profile nypl-sandbox",
     "deploy-qa": "git checkout qa && git pull origin qa && eb deploy discovery-ui-qa --profile nypl-digital-dev",
     "deploy-production": "git checkout master && git pull origin master && eb deploy discovery-ui-production --profile nypl-digital-dev",
-    "deploy-count": "echo 1"
+    "deploy-count": "echo 2"
   },
   "repository": {
     "type": "git",
