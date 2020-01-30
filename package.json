@@ -76,6 +76,8 @@
     "webpack-dev-server": "2.7.1"
   },
   "dependencies": {
+    "@nypl/design-toolkit": "^0.1.36",
+    "@nypl/dgx-header-component": "^2.6.0",
     "@nypl/dgx-react-footer": "0.5.2",
     "@nypl/dgx-svg-icons": "0.2.5",
     "@nypl/nypl-data-api-client": "0.2.5",
@@ -105,6 +107,7 @@
     "history": "3.3.0",
     "iso": "5.2.0",
     "jsonwebtoken": "^8.3.0",
+    "node-sass": "^4.13.1",
     "prop-types": "15.5.10",
     "react": "15.5.4",
     "react-a11y": "0.3.4",
