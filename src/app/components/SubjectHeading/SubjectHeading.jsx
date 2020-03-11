@@ -133,7 +133,7 @@ class SubjectHeading extends React.Component {
     this.fetchInitial({
       sortBy: sortType,
       direction,
-      range: Range.default(),
+      range: this.state.range,
     });
   }
 
