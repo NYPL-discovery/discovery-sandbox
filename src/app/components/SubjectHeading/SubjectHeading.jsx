@@ -89,10 +89,11 @@ class SubjectHeading extends React.Component {
       narrower.splice(-1, 1, ...data.narrower);
 
       if (data.next_url) {
-        narrower.splice(narrower.length, 1, {
+        narrower.splice(-1, 1, {
           button: 'next',
           updateParent: this.fetchAndUpdate(data.next_url),
           indentation: (this.props.subjectHeading.indentation || 0) + 1,
+          noEllipse: true,
         });
       }
 
@@ -106,13 +107,7 @@ class SubjectHeading extends React.Component {
     return (element) => {
       axios(url)
         .then(
-          (resp) => {
-            if (resp.data.narrower) {
-              this.addMore(element, resp.data);
-            } else {
-              element.hide();
-            }
-          },
+          resp => this.addMore(element, resp.data),
         ).catch((resp) => { console.error(resp); });
     };
   }
@@ -135,12 +130,11 @@ class SubjectHeading extends React.Component {
     return `${path}/subject_headings/${uuid}`;
   }
 
-  updateSort(sortType, direction, numberOpen) {
+  updateSort(sortType, direction) {
     this.fetchInitial({
       sortBy: sortType,
       direction,
       range: Range.default(),
-      numberOpen,
     });
   }
 
@@ -154,11 +148,10 @@ class SubjectHeading extends React.Component {
       direction,
     } = this.state;
 
-    let limit;
+    const limit = this.state.narrower.length;
 
     if (additionalParameters.sortBy) sortBy = additionalParameters.sortBy;
     if (additionalParameters.direction) direction = additionalParameters.direction;
-    if (additionalParameters.numberOpen) limit = additionalParameters.numberOpen;
     let url = `${appConfig.baseUrl}/api/subjectHeadings/subject_headings/${uuid}/narrower?sort_by=${sortBy}`;
 
     if (direction) url += `&direction=${direction}`;
@@ -173,7 +166,12 @@ class SubjectHeading extends React.Component {
           } = resp.data;
           narrower.forEach((child) => { child.indentation = (indentation || 0) + 1; });
           if (next_url) {
-            narrower.push({ button: 'next', updateParent: this.fetchAndUpdate(next_url), indentation: (indentation || 0) + 1 });
+            narrower[narrower.length - 1] = {
+              button: 'next',
+              updateParent: this.fetchAndUpdate(next_url),
+              indentation: (indentation || 0) + 1,
+              noEllipse: true,
+            };
           }
           this.updateSubjectHeading(
             Object.assign(
