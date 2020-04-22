@@ -57,6 +57,18 @@ deploy:
   on:
     repo: NYPL-discovery/discovery-front-end
     branch: shep-development
+- provider: elasticbeanstalk
+  skip_cleanup: false
+  access_key_id: "$AWS_ACCESS_KEY_ID_QA"
+  secret_access_key: "$AWS_SECRET_ACCESS_KEY_QA"
+  region: us-east-1
+  app: discovery-ui
+  env: discovery-ui-10-17-qa
+  bucket_name: elasticbeanstalk-us-east-1-946183545209
+  bucket_path: discovery-ui-10-17-qa
+  on:
+    repo: NYPL-discovery/discovery-front-end
+    branch: qa-10-17
 after_deploy: echo 'Successfully executed deploy trigger for Discovery Shared Collection
   Catalog on AWS'
 env:
