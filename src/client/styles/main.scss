@@ -23,6 +23,11 @@ Import style rules from NYPL React module components
 
 @import "style-v2.scss";
 
+* {
+  max-width: 100vw;
+  overflow-x: visible;
+}
+
 html {
   @include font-settings;
   background: #fff;
