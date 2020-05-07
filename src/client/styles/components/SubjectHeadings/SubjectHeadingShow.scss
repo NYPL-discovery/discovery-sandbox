@@ -46,6 +46,9 @@
 .subjectHeadingInfoBox {
   margin-bottom: 14px;
   min-width: 400px;
+  @include media(400px) {
+    min-width: 95vw;
+  }
   padding: 0;
 
   .subjectHeadingsTableCell {

@@ -41,5 +41,12 @@
     @include media(1025px) {
       margin-left: 25px;
     }
+    @include media($mobile-breakpoint) {
+      margin-left: 5px;
+    }
+  }
+
+  table {
+    table-layout: fixed;
   }
 }
