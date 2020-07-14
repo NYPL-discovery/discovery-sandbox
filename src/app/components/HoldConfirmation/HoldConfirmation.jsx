@@ -8,6 +8,7 @@ import {
   findWhere as _findWhere,
 } from 'underscore';
 import DocumentTitle from 'react-document-title';
+import Url from 'url-parse';
 
 import PatronStore from '../../stores/PatronStore';
 import appConfig from '../../data/appConfig';
@@ -221,6 +222,10 @@ class HoldConfirmation extends React.Component {
     if (!this.props.location.query.fromUrl) {
       return false;
     }
+
+    const reg = /\.nypl\.org$/;
+    const hrefToCheck = `http://${this.props.location.query.fromUrl}`;
+    if (!(new Url(hrefToCheck).hostname).match(reg)) return false;
 
     return (
       <span id="go-back-catalog">

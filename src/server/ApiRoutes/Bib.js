@@ -49,8 +49,6 @@ function fetchBib(bibId, cb, errorcb) {
 function bibSearchAjax(req, res) {
   const bibId = req.query.bibId || '';
 
-  console.log("bibSearchAjax");
-
   fetchBib(
     bibId,
     data => res.json(data),

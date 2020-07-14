@@ -257,7 +257,6 @@ class FilterPopup extends React.Component {
     this.closeForm(e);
 
     Actions.updateSelectedFilters(filtersToApply);
-    console.log('router ', this.context, JSON.stringify(this.context));
     this.context.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
     return true;
   }

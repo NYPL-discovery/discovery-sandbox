@@ -39,6 +39,7 @@ class ElectronicDelivery extends React.Component {
     const selectedItem = (bib && itemId) ? LibraryItem.getItem(bib, itemId) : {};
     const itemSource = (selectedItem && selectedItem.itemSource) ? selectedItem.itemSource : null;
     const raiseError = _isEmpty(this.props.error) ? {} : this.props.error;
+    const serverRedirect = true;
 
     this.state = _extend({
       title,
@@ -46,15 +47,18 @@ class ElectronicDelivery extends React.Component {
       itemId,
       itemSource,
       raiseError,
+      serverRedirect,
     }, { patron: PatronStore.getState() });
 
     this.requireUser = this.requireUser.bind(this);
     this.submitRequest = this.submitRequest.bind(this);
     this.raiseError = this.raiseError.bind(this);
+    this.fromUrl = this.fromUrl.bind(this);
   }
 
   componentDidMount() {
     this.requireUser();
+    if (this.state.serverRedirect) this.setState({ serverRedirect: false });
 
     document.getElementById('edd-request-title').focus();
   }
@@ -105,10 +109,25 @@ class ElectronicDelivery extends React.Component {
   }
 
   /**
+   * fromUrl()
+   * Build the fromUrl parameter
+   */
+
+  fromUrl() {
+    const {
+      location: {
+        query,
+      },
+    } = this.props;
+
+    return query && query.fromUrl ? `&fromUrl=${encodeURIComponent(query.fromUrl)}` : '';
+  }
+
+  /**
    * submitRequest()
    * Client-side submit call.
    */
-  submitRequest(fields) {
+  submitRequest() {
     const {
       bibId,
       itemId,
@@ -116,16 +135,8 @@ class ElectronicDelivery extends React.Component {
       title,
     } = this.state;
     const path = `${appConfig.baseUrl}/hold/confirmation/${bibId}-${itemId}`;
-    const data = _extend({
-      bibId,
-      itemId,
-      pickupLocation: 'edd',
-      itemSource,
-    }, fields);
     const searchKeywords = this.props.searchKeywords;
     const searchKeywordsQuery = searchKeywords ? `&q=${searchKeywords}` : '';
-    const fromUrlQuery = this.props.location.query && this.props.location.query.fromUrl ?
-      `&fromUrl=${encodeURIComponent(this.props.location.query.fromUrl)}` : '';
     const itemSourceMapping = {
       'recap-pul': 'Princeton',
       'recap-cul': 'Columbia',
@@ -138,22 +149,14 @@ class ElectronicDelivery extends React.Component {
     Actions.updateLoadingStatus(true);
     trackDiscovery(`Submit Request EDD${partnerEvent}`, `${title} - ${itemId}`);
 
-    axios
-      .post(`${appConfig.baseUrl}/api/newHold`, data)
+    const formData = new FormData(document.getElementById('place-edd-hold-form'));
+    axios.post(
+      `${appConfig.baseUrl}/edd`,
+      Object.fromEntries(formData.entries()),
+    )
       .then((response) => {
-        if (response.data.error && response.data.error.status !== 200) {
-          Actions.updateLoadingStatus(false);
-          this.context.router.push(
-            `${path}?errorStatus=${response.data.error.status}` +
-            `&errorMessage=${response.data.error.statusText}${searchKeywordsQuery}${fromUrlQuery}`,
-          );
-        } else {
-          Actions.updateLoadingStatus(false);
-          this.context.router.push(
-            `${path}?pickupLocation=edd&requestId=${response.data.id}` +
-            `${searchKeywordsQuery}${fromUrlQuery}`,
-          );
-        }
+        this.context.router.push(response.data);
+        Actions.updateLoadingStatus(false);
       })
       .catch((error) => {
         console.error(
@@ -163,7 +166,7 @@ class ElectronicDelivery extends React.Component {
 
         Actions.updateLoadingStatus(false);
         this.context.router.push(
-          `${path}?errorMessage=${error}${searchKeywordsQuery}${fromUrlQuery}`,
+          `${path}?errorMessage=${error}${searchKeywordsQuery}${this.fromUrl()}`,
         );
       });
   }
@@ -202,6 +205,7 @@ class ElectronicDelivery extends React.Component {
       itemId,
       title,
       raiseError,
+      serverRedirect,
     } = this.state;
     const bib = (this.props.bib && !_isEmpty(this.props.bib)) ? this.props.bib : null;
     const callNo = bib && bib.shelfMark && bib.shelfMark.length ? bib.shelfMark[0] : null;
@@ -290,6 +294,8 @@ class ElectronicDelivery extends React.Component {
                     form={form}
                     defaultEmail={patronEmail}
                     searchKeywords={searchKeywords}
+                    serverRedirect={serverRedirect}
+                    fromUrl={this.fromUrl()}
                   />
                   : null
               }

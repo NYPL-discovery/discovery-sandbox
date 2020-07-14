@@ -76,6 +76,7 @@ class ElectronicDeliveryForm extends React.Component {
     // errors passed down.
     return (
       <form
+        id="place-edd-hold-form"
         className="place-hold-form form electronic-delivery-form"
         action={`${appConfig.baseUrl}/edd`}
         method="POST"
@@ -288,6 +289,9 @@ class ElectronicDeliveryForm extends React.Component {
           name="searchKeywords"
           value={this.props.searchKeywords}
         />
+        <input type="hidden" name="serverRedirect" value={this.props.serverRedirect} />
+        <input type="hidden" name="fromUrl" value={this.props.fromUrl} />
+        <input type="hidden" name="pickupLocation" value="edd" />
 
         <button
           type="submit"
@@ -312,6 +316,8 @@ ElectronicDeliveryForm.propTypes = {
   form: PropTypes.object,
   defaultEmail: PropTypes.string,
   searchKeywords: PropTypes.string,
+  serverRedirect: PropTypes.bool,
+  fromUrl: PropTypes.string,
 };
 
 ElectronicDeliveryForm.defaultProps = {

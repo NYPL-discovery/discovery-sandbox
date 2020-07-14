@@ -60,7 +60,6 @@ app.use(`${appConfig.baseUrl}/`, express.static(DIST_PATH));
 app.use('*/src/client', express.static(INDEX_PATH));
 
 app.use('/', (req, res, next) => {
-  console.log('req path: ', req.path);
   if (req.path === appConfig.baseUrl || req.path === '/') {
     return res.redirect(`${appConfig.baseUrl}/`);
   }
