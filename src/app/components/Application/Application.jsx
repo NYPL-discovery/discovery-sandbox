@@ -65,11 +65,14 @@ export class Application extends React.Component {
     const { innerWidth } = window;
     const {
       xtrasmall,
+      tabletPortrait,
       tablet,
     } = breakpoints;
 
     if (innerWidth <= xtrasmall) {
       if (media !== 'mobile') this.setState({ media: 'mobile' });
+    } else if (innerWidth <= tabletPortrait) {
+      if (media !== 'tabletPortrait') this.setState({ media: 'tabletPortrait' });
     } else if (innerWidth <= tablet) {
       if (media !== 'tablet') this.setState({ media: 'tablet' });
     } else {

@@ -2,7 +2,7 @@
 /* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
-import { shallow } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 
 import ItemFilters from './../../src/app/components/Item/ItemFilters';
 import item from '../fixtures/libraryItems';
@@ -33,7 +33,7 @@ describe('ItemFilters', () => {
     let component;
     let itemFilters;
     before(() => {
-      component = shallow(<ItemFilters
+      component = mount(<ItemFilters
         items={[
           item.full,
           item.missingData,

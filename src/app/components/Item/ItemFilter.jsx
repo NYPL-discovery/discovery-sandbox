@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Checkbox, Button, Icon } from '@nypl/design-system-react-components';
 import FocusTrap from 'focus-trap-react';
 
-import { isOptionSelected, trackDiscovery } from '../../utils/utils';
+import { isOptionSelected } from '../../utils/utils';
 
 // export for testing purposes
 export const parseDistinctOptions = options => Array.from(
@@ -16,13 +16,19 @@ export const parseDistinctOptions = options => Array.from(
     label: options.find(option => (option.id === id && option.label.length)).label,
   }));
 
-const ItemFilter = ({ filter, options, open, manageFilterDisplay }, context) => {
-  const { router } = context;
-  const { location, createHref } = router;
+const ItemFilter = ({
+  filter,
+  options,
+  openFilter,
+  manageFilterDisplay,
+  mobile,
+  selectedFilters,
+  submitFilterSelections,
+  updateSelectedFilters,
+}, { router }) => {
+  const { location } = router;
   const { query } = location;
-  const initialFilters = location.query ? location.query : {};
-  const [selectionMade, setSelectionMade] = useState(query);
-  const [selectedFilters, updateSelectedFilters] = useState(initialFilters);
+  const [selectionMade, setSelectionMade] = useState(false);
 
   const selectFilter = (value) => {
     const updatedSelectedFilters = selectedFilters;
@@ -52,19 +58,6 @@ const ItemFilter = ({ filter, options, open, manageFilterDisplay }, context) => 
     } else selectFilter(option);
   };
 
-  const submitFilterSelections = () => {
-    const href = createHref({
-      ...location,
-      ...{
-        query: selectedFilters,
-        hash: '#item-filters',
-        search: '',
-      },
-    });
-    trackDiscovery('Search Filters', `Apply Filter - ${JSON.stringify(selectedFilters)}`);
-    router.push(href);
-  };
-
   const isSelected = (option) => {
     if (!query) return false;
     const result = isOptionSelected(query[filter], option.id);
@@ -73,12 +66,15 @@ const ItemFilter = ({ filter, options, open, manageFilterDisplay }, context) => 
   };
 
   const distinctOptions = parseDistinctOptions(options);
+  const initialFilters = location.query ? location.query : {};
   const thisFilterSelections = initialFilters[filter];
   const determineNumOfSelections = () => {
     if (!thisFilterSelections) return null;
     return typeof thisFilterSelections === 'string' ? 1 : thisFilterSelections.length;
   };
   const numOfSelections = determineNumOfSelections();
+
+  const isOpen = openFilter === filter;
 
   return (
     <div
@@ -88,48 +84,53 @@ const ItemFilter = ({ filter, options, open, manageFilterDisplay }, context) => 
         focusTrapOptions={{
           clickOutsideDeactivates: true,
           onDeactivate: () => manageFilterDisplay('none'),
+          returnFocusOnDeactivate: false,
         }}
-        active={open}
+        active={isOpen}
       >
         <Button
-          className="item-filter-button"
+          className={`item-filter-button ${
+            isOpen ? ' open' : ''}`}
           buttonType="outline"
           onClick={() => manageFilterDisplay(filter)}
           type="button"
         >
-          {filter}{numOfSelections ? ` (${numOfSelections})` : null} <Icon name={open ? 'minus' : 'plus'} />
+          {filter}{numOfSelections ? ` (${numOfSelections})` : null} <Icon name={isOpen ? 'minus' : 'plus'} />
         </Button>
-        {open ? (
+        {isOpen ? (
           <div
             className="item-filter-content"
           >
-            <ul>
+            <fieldset>
               {distinctOptions.map((option, i) => (
-                <li key={option.id || i}>
-                  <Checkbox
-                    labelOptions={{
-                      id: option.id,
-                      labelContent: option.label,
-                    }}
-                    onChange={() => handleCheckbox(option)}
-                    key={option.id || i}
-                    isSelected={isSelected(option)}
-                  />
-                </li>
+                <Checkbox
+                  labelOptions={{
+                    id: option.id,
+                    labelContent: option.label,
+                  }}
+                  onChange={() => handleCheckbox(option)}
+                  key={option.id || i}
+                  isSelected={isSelected(option)}
+                />
               ))}
-            </ul>
-            <div className="item-filter-buttons">
-              <Button
-                buttonType="link"
-                onClick={() => manageFilterDisplay('none')}
-              >Clear
-              </Button>
-              <Button
-                onClick={submitFilterSelections}
-                disabled={!selectionMade}
-              >Apply
-              </Button>
-            </div>
+            </fieldset>
+            {
+              !mobile ?
+              (
+                <div className="item-filter-buttons">
+                  <Button
+                    buttonType="link"
+                    onClick={() => manageFilterDisplay('none')}
+                  >Clear
+                  </Button>
+                  <Button
+                    onClick={() => submitFilterSelections(selectedFilters)}
+                    disabled={!selectionMade}
+                  >Apply
+                  </Button>
+                </div>
+              ) : null
+            }
           </div>
         ) : null}
       </FocusTrap>
@@ -140,8 +141,12 @@ const ItemFilter = ({ filter, options, open, manageFilterDisplay }, context) => 
 ItemFilter.propTypes = {
   filter: PropTypes.string,
   options: PropTypes.array,
-  open: PropTypes.bool,
+  openFilter: PropTypes.string,
   manageFilterDisplay: PropTypes.func,
+  mobile: PropTypes.bool,
+  selectedFilters: PropTypes.object,
+  submitFilterSelections: PropTypes.func,
+  updateSelectedFilters: PropTypes.func,
 };
 
 ItemFilter.contextTypes = {

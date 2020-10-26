@@ -59,6 +59,7 @@ describe('Application', () => {
   describe('should set media type in context', () => {
     const {
       tablet,
+      tabletPortrait,
       xtrasmall,
     } = breakpoints;
 
@@ -66,11 +67,17 @@ describe('Application', () => {
       resizeWindow(tablet + 1);
       expect(component.state().media).to.eql('desktop');
     });
-    it(`should set media as "tablet" for screenwidths ${xtrasmall + 1}-${tablet}px`, () => {
-      resizeWindow(xtrasmall + 1);
+    it(`should set media as "tablet" for screenwidths ${tabletPortrait + 1}-${tablet}px`, () => {
+      resizeWindow(tabletPortrait + 1);
       expect(component.state().media).to.eql('tablet');
       resizeWindow(tablet);
       expect(component.state().media).to.eql('tablet');
+    });
+    it(`should set media as "tabletPortrait" for screenwidths ${xtrasmall + 1}-${tabletPortrait}px`, () => {
+      resizeWindow(xtrasmall + 1);
+      expect(component.state().media).to.eql('tabletPortrait');
+      resizeWindow(tabletPortrait);
+      expect(component.state().media).to.eql('tabletPortrait');
     });
     it(`should set media as "mobile" for screenwidths below ${xtrasmall}`, () => {
       resizeWindow(xtrasmall);

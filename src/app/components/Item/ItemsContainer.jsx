@@ -177,19 +177,23 @@ class ItemsContainer extends React.Component {
         {itemTable}
         {
           !!(shortenItems && this.filteredItems.length >= 20 && !this.state.showAll) &&
-            (<div className="view-all-items-container">
-              {
-                this.state.js ?
-                  (<a href="#" onClick={this.showAll}>View All Items</a>) :
-                  (<Link
-                    to={`${appConfig.baseUrl}/bib/${bibId}/all`}
-                    className="view-all-items"
-                    onClick={() => trackDiscovery('View All Items', `Click - ${bibId}`)}
-                  >
-                    View All Items
-                  </Link>)
-              }
-            </div>)
+            (
+              <div className="view-all-items-container">
+                {
+                  this.state.js ?
+                    (<a href="#" onClick={this.showAll}>View All Items</a>) :
+                    (
+                      <Link
+                        to={`${appConfig.baseUrl}/bib/${bibId}/all`}
+                        className="view-all-items"
+                        onClick={() => trackDiscovery('View All Items', `Click - ${bibId}`)}
+                      >
+                        View All Items
+                      </Link>
+                    )
+                }
+              </div>
+            )
         }
         {pagination}
       </div>
@@ -203,7 +207,7 @@ ItemsContainer.propTypes = {
   bibId: PropTypes.string,
   shortenItems: PropTypes.bool,
   searchKeywords: PropTypes.string,
-  holdings: PropTypes.object,
+  holdings: PropTypes.array,
 };
 
 ItemsContainer.defaultProps = {

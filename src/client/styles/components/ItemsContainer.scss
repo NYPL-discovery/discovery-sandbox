@@ -1,0 +1,125 @@
+.item-filter {
+  display: inline-block;
+  width: 30%;
+
+  .item-filter-button {
+    border: 1px solid var(--ui-gray-medium);
+    &.open {
+      border-bottom: 0;
+    }
+  }
+
+  fieldset {
+    border: 0;
+    list-style: none;
+    margin-bottom: 0;
+
+    .closed {
+      display: none;
+    }
+  }
+
+  li {
+    margin-bottom: 0;
+  }
+
+  label {
+    margin-bottom: 0;
+  }
+}
+
+.item-filter-content {
+  background-color: #ffffff;
+  border: 1px solid var(--ui-gray-medium);
+  padding: var(--space-xs) var(--space-s);
+  position: absolute;
+  width: 280px;
+  z-index: 1;
+}
+
+.item-filter-button {
+  justify-content: space-between;
+  text-transform: capitalize;
+  width: 90%;
+}
+
+.item-table-filters {
+  background-color: #efedeb;
+  padding: 10px;
+}
+
+.item-filter-buttons {
+  float: right;
+
+  .button {
+    display: initial;
+
+    .button-icon {
+      float: right;
+    }
+  }
+}
+
+.item-filter-info {
+  h3 {
+    display: inline-block;
+    padding-right: 10px;
+    margin-bottom: 20px;
+  }
+
+  button {
+    color: rgb(195, 76, 61);
+    display: inline-block;
+  }
+}
+
+// this is the minimum width at which the `Status` options will not go beyond the screenwidth
+@media (max-width: 750px) {
+  .item-filter {
+    display: block;
+    width: 100%;
+    margin: 10px 0;
+  }
+
+  .item-filter-button {
+    width: 100%;
+  }
+
+  .item-filter-content {
+    position: unset;
+    width: 100%;
+    float: left;
+    margin-bottom: 10px;
+  }
+
+  .item-filter-button {
+    border-bottom: none;
+  }
+}
+
+.modal.scc-item-filters {
+  background-color: white;
+  box-sizing: border-box;
+
+  h1 {
+    padding-left: 10px;
+  }
+
+  .item-table-filters {
+    background-color: white;
+  }
+}
+
+.no-scroll {
+  position: inherit;
+}
+
+.go-back-button {
+  display: inline-block;
+  padding: 0;
+}
+
+.show-results-button {
+  float: right;
+  padding-right: 10px;
+}
