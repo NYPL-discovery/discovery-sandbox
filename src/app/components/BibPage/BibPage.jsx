@@ -27,6 +27,7 @@ export const BibPage = (props) => {
   const {
     location,
     searchKeywords,
+    features,
   } = props;
 
   const bib = props.bib ? props.bib : {};
@@ -136,6 +137,13 @@ export const BibPage = (props) => {
   const createAPIQuery = basicQuery(props);
   const searchUrl = createAPIQuery({});
 
+  const classicLink = (
+    bibId.startsWith('b') && features.includes('catalog-link') ?
+      <a href={`https://catalog.nypl.org/record=${bibId}~S1`}>View in Classic</a>
+      :
+      null
+  );
+
   return (
     <DocumentTitle title="Item Details | Shared Collection Catalog | NYPL">
       <main className="main-page">
@@ -177,6 +185,7 @@ export const BibPage = (props) => {
                 tabs={tabs}
                 hash={location.hash}
               />
+              { classicLink }
             </div>
           </div>
         </div>
@@ -194,9 +203,11 @@ BibPage.propTypes = {
 const mapStateToProps = ({
   bib,
   searchKeywords,
+  features,
 }) => ({
   bib,
   searchKeywords,
+  features,
 });
 
 export default withRouter(connect(mapStateToProps)(BibPage));

@@ -50,6 +50,7 @@ const commonSettings = {
       'process.env': {
         SHEP_API: JSON.stringify(process.env.SHEP_API),
         LOGIN_URL: JSON.stringify(process.env.LOGIN_URL),
+        CLASSIC_CATALOG: JSON.stringify(process.env.CLASSIC_CATALOG),
       },
     }),
     // new BundleAnalyzerPlugin({
@@ -218,6 +219,7 @@ if (ENV === 'production') {
           GA_ENV: JSON.stringify(process.env.GA_ENV),
           SHEP_API: process.env.SHEP_API,
           LOGIN_URL: process.env.LOGIN_URL,
+          CLASSIC_CATALOG: process.env.CLASSIC_CATALOG,
         },
       }),
     ],

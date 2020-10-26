@@ -19,6 +19,7 @@ const appConfig = {
       production: 'https://digital-research-books-api.nypl.org/v3/sfr/search',
     },
   },
+  classicCatalog: process.env.CLASSIC_CATALOG,
   shepApi: process.env.SHEP_API,
   loginUrl: process.env.LOGIN_URL || 'https://login.nypl.org/auth/login',
   tokenUrl: 'https://isso.nypl.org/',
