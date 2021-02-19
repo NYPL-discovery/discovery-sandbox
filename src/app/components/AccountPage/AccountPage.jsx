@@ -12,10 +12,9 @@ import {
   Link,
   SkeletonLoader,
 } from '@nypl/design-system-react-components';
-import moment from 'moment'
+import moment from 'moment';
 
 import LinkTabSet from './LinkTabSet';
-import AccountSettings from './AccountSettings';
 import AccountContent from './AccountContent';
 
 import { manipulateAccountPage, makeRequest, buildReqBody } from '../../utils/accountPageUtils';

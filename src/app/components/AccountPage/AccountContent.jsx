@@ -5,6 +5,7 @@ import {
   SkeletonLoader,
 } from '@nypl/design-system-react-components';
 
+import AccountSettings from './AccountSettings';
 import { manipulateAccountPage, makeRequest, buildReqBody } from '../../utils/accountPageUtils';
 
 const AccountContent = ({ contentType, setItemToCancel }) => {
@@ -12,6 +13,7 @@ const AccountContent = ({ contentType, setItemToCancel }) => {
     patron: state.patron,
     accountHtml: state.accountHtml,
     loading: state.loading,
+    appConfig: state.appConfig,
   }));
 
   const dispatch = useDispatch();
@@ -50,6 +52,7 @@ const AccountContent = ({ contentType, setItemToCancel }) => {
       };
     }
   }, [accountHtml]);
+  console.log('loading', loading);
 
   return (
     <>
