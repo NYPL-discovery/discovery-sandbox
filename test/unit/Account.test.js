@@ -132,6 +132,8 @@ describe('`fetchAccountPage`', () => {
 
     it('should call getHomeLibrary', () => {
       return Account.fetchAccountPage(renderMockReq('settings'), mockRes, (result) => {
+        expect(Account.getHomeLibrary.called).to.eq(true);
+
         expect(result).to.be.a('object');
         expect(result.patron).to.be.a('object');
         expect(result.patron.homeLibraryName).to.eq('Mid-Manhattan');

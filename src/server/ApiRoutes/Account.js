@@ -9,7 +9,9 @@ const nyplApiClientGet = endpoint => (
     .then(client => client.get(endpoint, { cache: false }))
 );
 
-function getHomeLibrary(code) {
+const Account = {};
+
+Account.getHomeLibrary = (code) => {
   return nyplApiClientGet(`/locations?location_codes=${code}`)
     .then((resp) => {
       if (!resp || !resp[code] || !resp[code][0].label) return { code };
@@ -35,7 +37,7 @@ function getAccountPage(res, req) {
   });
 }
 
-function fetchAccountPage(req, res, resolve) {
+Account.fetchAccountPage = (req, res, resolve) => {
   const requireUser = User.requireUser(req, res);
   const { redirect } = requireUser;
   if (redirect) {
@@ -48,7 +50,7 @@ function fetchAccountPage(req, res, resolve) {
   if (content === 'settings') {
     const patron = global.store.getState().patron;
     if (patron.homeLibraryCode && !patron.homeLibraryName) {
-      getHomeLibrary(patron.homeLibraryCode)
+      Account.getHomeLibrary(patron.homeLibraryCode)
         .then((resp) => {
           resolve({
             patron: {
@@ -92,7 +94,7 @@ function fetchAccountPage(req, res, resolve) {
     });
 }
 
-function postToAccountPage(req, res) {
+Account.postToAccountPage = (req, res) => {
   const requireUser = User.requireUser(req, res);
   const { redirect } = requireUser;
   if (redirect) res.json({ redirect });
@@ -110,8 +112,4 @@ function postToAccountPage(req, res) {
     .catch(resp => res.json({ error: resp }));
 }
 
-export default {
-  fetchAccountPage,
-  postToAccountPage,
-  getHomeLibrary,
-};
+export default Account;
