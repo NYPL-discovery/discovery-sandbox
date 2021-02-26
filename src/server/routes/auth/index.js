@@ -5,9 +5,25 @@ function initializePatronTokenAuth(req, res, next) {
   const nyplIdentityCookieString = req.cookies.nyplIdentityPatron;
   const nyplIdentityCookieObject = nyplIdentityCookieString ?
     JSON.parse(nyplIdentityCookieString) : {};
+  global.log.push(
+    {
+      name: 'initializePatronTokenAuthOutsideCallback',
+      path: req._parsedUrl.path,
+      token: nyplIdentityCookieObject.access_token,
+      string: nyplIdentityCookieString,
+      id: req.id,
+    },
+  );
 
   if (nyplIdentityCookieObject && nyplIdentityCookieObject.access_token) {
     return jwt.verify(nyplIdentityCookieObject.access_token, config.publicKey, (error, decoded) => {
+      global.log.push({
+        name: 'initializePatronTokenAuthInsideCallback',
+        token: nyplIdentityCookieObject.access_token,
+        string: nyplIdentityCookieString,
+        path: req._parsedUrl.path,
+        id: req.id,
+      });
       if (error) {
         // Token has expired, need to refresh token
         req.patronTokenResponse = {

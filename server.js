@@ -22,6 +22,7 @@ import logger from './logger';
 import configureStore from './src/app/stores/configureStore';
 import initialState from './src/app/stores/InitialState';
 import { updateLoadingStatus } from './src/app/actions/Actions';
+import { updatePatronData } from './src/app/actions/Actions';
 
 const ROOT_PATH = __dirname;
 const INDEX_PATH = path.resolve(ROOT_PATH, 'src/client');
@@ -32,7 +33,7 @@ const isProduction = process.env.NODE_ENV === 'production';
 const app = express();
 
 let application;
-
+global.log = [];
 app.use(compress());
 
 // Disables the Server response from
@@ -66,8 +67,15 @@ app.use('/', (req, res, next) => {
 });
 
 app.use('/*', (req, res, next) => {
+  req.id = Math.random();
   const initialStore = { ...initialState, lastLoaded: req._parsedUrl.path };
   global.store = configureStore(initialStore);
+  global.log.push({
+    name: 'intialize',
+    store: global.store.getState().patron,
+    path: req._parsedUrl.path,
+    id: req.id,
+  });
   next();
 });
 
@@ -80,6 +88,12 @@ app.use('/', apiRoutes);
 app.get('/*', (req, res) => {
   const appRoutes = (req.url).indexOf(appConfig.baseUrl) !== -1 ? routes.client : routes.server;
   const store = global.store;
+  global.log.push({
+    name: 'main',
+    store: store.getState().patron,
+    path: req._parsedUrl.path,
+    id: req.id,
+  });
 
   match({ routes: appRoutes, location: req.url }, (error, redirectLocation, renderProps) => {
     if (error) {
@@ -88,12 +102,14 @@ app.get('/*', (req, res) => {
       res.redirect(302, redirectLocation.pathname + redirectLocation.search);
     } else if (renderProps) {
       store.dispatch(updateLoadingStatus(false));
+      store.dispatch(updatePatronData({ ...store.getState().patron, log: global.log }));
       application = ReactDOMServer.renderToString(
         <Provider store={store}>
           <RouterContext {...renderProps} />
         </Provider>,
       );
       const title = DocumentTitle.rewind();
+      // store.features.log = global.log;
 
       res
         .status(200)
@@ -105,6 +121,7 @@ app.get('/*', (req, res) => {
           webpackPort: WEBPACK_DEV_PORT,
           path: req.url,
           isProduction,
+          log: JSON.stringify(global.log),
           baseUrl: appConfig.baseUrl,
         });
     } else {

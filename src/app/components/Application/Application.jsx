@@ -45,6 +45,7 @@ export class Application extends React.Component {
   componentDidMount() {
     window.addEventListener('resize', this.onWindowResize.bind(this));
     this.onWindowResize();
+    console.log(JSON.stringify(this.props.patron.log, null, 2));
     const { router } = this.context;
     if (this.state.urlEnabledFeatures) {
       router.listen(() => {

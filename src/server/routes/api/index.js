@@ -15,10 +15,23 @@ export function getPatronData(req, res, next) {
   ) {
     const userId = req.patronTokenResponse.decodedPatron.sub;
 
+    global.log.push({
+      name: 'getPatronDataOutsideCallback',
+      patronTokenResponse: req.patronTokenResponse,
+      path: req._parsedUrl.path,
+      id: req.id,
+    });
+
     return nyplApiClient()
       .then(client =>
         client.get(`/patrons/${userId}`, { cache: false })
           .then((response) => {
+            global.log.push({
+              name: 'getPatronDataInsideCallback',
+              patronTokenResponse: req.patronTokenResponse,
+              path: req._parsedUrl.path,
+              id: req.id,
+            });
             if (_isEmpty(response)) {
               // Data is empty for the Patron
               const patron = {
