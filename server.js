@@ -121,7 +121,6 @@ app.get('/*', (req, res) => {
           webpackPort: WEBPACK_DEV_PORT,
           path: req.url,
           isProduction,
-          log: JSON.stringify(global.log),
           baseUrl: appConfig.baseUrl,
         });
     } else {
