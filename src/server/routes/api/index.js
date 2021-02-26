@@ -15,7 +15,7 @@ export function getPatronData(req, res, next) {
   ) {
     const userId = req.patronTokenResponse.decodedPatron.sub;
 
-    global.log.push({
+    req.log.push({
       name: 'getPatronDataOutsideCallback',
       patronTokenResponse: req.patronTokenResponse,
       path: req._parsedUrl.path,
@@ -26,7 +26,7 @@ export function getPatronData(req, res, next) {
       .then(client =>
         client.get(`/patrons/${userId}`, { cache: false })
           .then((response) => {
-            global.log.push({
+            req.log.push({
               name: 'getPatronDataInsideCallback',
               patronTokenResponse: req.patronTokenResponse,
               path: req._parsedUrl.path,

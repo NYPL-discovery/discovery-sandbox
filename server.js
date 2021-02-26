@@ -33,7 +33,7 @@ const isProduction = process.env.NODE_ENV === 'production';
 const app = express();
 
 let application;
-global.log = [];
+// global.log = [];
 app.use(compress());
 
 // Disables the Server response from
@@ -68,9 +68,10 @@ app.use('/', (req, res, next) => {
 
 app.use('/*', (req, res, next) => {
   req.id = Math.random();
+  req.log = [];
   const initialStore = { ...initialState, lastLoaded: req._parsedUrl.path };
   global.store = configureStore(initialStore);
-  global.log.push({
+  req.log.push({
     name: 'intialize',
     store: global.store.getState().patron,
     path: req._parsedUrl.path,
@@ -88,7 +89,7 @@ app.use('/', apiRoutes);
 app.get('/*', (req, res) => {
   const appRoutes = (req.url).indexOf(appConfig.baseUrl) !== -1 ? routes.client : routes.server;
   const store = global.store;
-  global.log.push({
+  req.log.push({
     name: 'main',
     store: store.getState().patron,
     path: req._parsedUrl.path,
@@ -102,7 +103,7 @@ app.get('/*', (req, res) => {
       res.redirect(302, redirectLocation.pathname + redirectLocation.search);
     } else if (renderProps) {
       store.dispatch(updateLoadingStatus(false));
-      store.dispatch(updatePatronData({ ...store.getState().patron, log: global.log }));
+      store.dispatch(updatePatronData({ ...store.getState().patron, log: req.log }));
       application = ReactDOMServer.renderToString(
         <Provider store={store}>
           <RouterContext {...renderProps} />

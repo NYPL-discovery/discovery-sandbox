@@ -5,7 +5,7 @@ function initializePatronTokenAuth(req, res, next) {
   const nyplIdentityCookieString = req.cookies.nyplIdentityPatron;
   const nyplIdentityCookieObject = nyplIdentityCookieString ?
     JSON.parse(nyplIdentityCookieString) : {};
-  global.log.push(
+  req.log.push(
     {
       name: 'initializePatronTokenAuthOutsideCallback',
       path: req._parsedUrl.path,
@@ -17,7 +17,7 @@ function initializePatronTokenAuth(req, res, next) {
 
   if (nyplIdentityCookieObject && nyplIdentityCookieObject.access_token) {
     return jwt.verify(nyplIdentityCookieObject.access_token, config.publicKey, (error, decoded) => {
-      global.log.push({
+    req.log.push({
         name: 'initializePatronTokenAuthInsideCallback',
         token: nyplIdentityCookieObject.access_token,
         string: nyplIdentityCookieString,
