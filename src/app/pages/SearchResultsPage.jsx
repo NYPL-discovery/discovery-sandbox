@@ -68,7 +68,7 @@ const SearchResults = (props, context) => {
     <SccContainer
       useLoadingLayer
       activeSection="search"
-      pageTitle="SearchResults"
+      pageTitle="Search Results"
     >
       <div className="content-header research-search">
         <div className="research-search__inner-content">

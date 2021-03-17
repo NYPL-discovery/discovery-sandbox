@@ -3,7 +3,7 @@
 ### Version
 > 1.7.0
 
-### Shared Collection Catalog
+### Research Catalog (formerly Shared Collection Catalog)
 [![GitHub version](https://badge.fury.io/gh/nypl-discovery%2Fdiscovery-front-end.svg)](https://badge.fury.io/gh/nypl-discovery%2Fdiscovery-front-end)
 [![Build Status](https://travis-ci.org/NYPL/discovery-front-end.svg?branch=master)](https://travis-ci.org/NYPL/discovery-front-end)
 [![Dependencies Status](https://david-dm.org/nypl-discovery/discovery-front-end/status.svg)](https://david-dm.org/nypl-discovery/discovery-front-end)

@@ -10,6 +10,8 @@ import Search from '../components/Search/Search';
 import Notification from '../components/Notification/Notification';
 import SccContainer from '../components/SccContainer/SccContainer';
 
+import appConfig from '../data/appConfig';
+
 import {
   basicQuery,
   trackDiscovery,
@@ -41,7 +43,7 @@ const Home = (props, context) => {
 
       <div className="nypl-column-full">
         <p className="nypl-lead">
-          The New York Public Library’s Shared Collection Catalog provides researchers with access to materials from NYPL, Columbia University, and Princeton University.
+          The New York Public Library’s {appConfig.displayTitle} provides researchers with access to materials from NYPL, Columbia University, and Princeton University.
           <br />
           Coming Soon: After undergoing significant enhancements, the Shared Collection Catalog will become the Research Catalog and serve as the primary catalog for NYPL’s research collections in early 2021. <a href="https://www.nypl.org/research/collections/about/shared-collection-catalog">Learn more.</a>
         </p>

@@ -179,9 +179,8 @@ export class HoldConfirmation extends React.Component {
   renderStartOverLink() {
     if (this.props.location.query.fromUrl) {
       return (
-        <span id="go-to-shared-catalog"> You may also try your search in
-          our <Link to={`${appConfig.baseUrl}/`} onClick={e => this.backToHome(e)}>Shared
-          Collection Catalog</Link>.
+        <span id="go-to-research-catalog"> You may also try your search in
+          our <Link to={`${appConfig.baseUrl}/`} onClick={e => this.backToHome(e)}>{appConfig.displayTitle}</Link>.
         </span>
       );
     }

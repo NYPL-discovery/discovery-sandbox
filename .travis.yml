@@ -5,7 +5,7 @@ install: npm rebuild node-sass && npm install
 before_script: npm run dist
 script: npm test
 before_deploy: echo 'All unit tests passed; Successfull built distribution assets;
-  Preparing to deploy Discovery Shared Collection Catalog to AWS.'
+  Preparing to deploy Discovery Research Catalog to AWS.'
 deploy:
 - provider: elasticbeanstalk
   skip_cleanup: true
@@ -55,7 +55,7 @@ deploy:
   on:
     repo: NYPL/discovery-front-end
     branch: serials
-after_deploy: echo 'Successfully executed deploy trigger for Discovery Shared Collection
+after_deploy: echo 'Successfully executed deploy trigger for Discovery Research
   Catalog on AWS'
 env:
   global:

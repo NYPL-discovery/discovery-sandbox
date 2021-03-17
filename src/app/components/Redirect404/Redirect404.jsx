@@ -1,11 +1,9 @@
 import { Heading } from '@nypl/design-system-react-components';
 import React from 'react';
-import DocumentTitle from 'react-document-title';
 import PropTypes from 'prop-types';
 import appConfig from '../../data/appConfig';
 
 const Redirect404 = (props, context) => {
-
   const originalUrl = context &&
     context.router &&
     context.router.location &&
@@ -14,7 +12,7 @@ const Redirect404 = (props, context) => {
 
   const {
     circulatingCatalog,
-    classicCatalog,
+    legacyCatalog,
   } = appConfig;
 
   return (
@@ -29,7 +27,7 @@ const Redirect404 = (props, context) => {
             <span>{ originalUrl ? `URL: ${originalUrl}` : ''}</span>
           </div>
           {"You may be able to find what you're looking for in the "}
-          <a href={classicCatalog}>Legacy Catalog</a>
+          <a href={legacyCatalog}>Legacy Catalog</a>
           {' or the '}
           <a href={circulatingCatalog}>Circulating Catalog.</a>
         </p>

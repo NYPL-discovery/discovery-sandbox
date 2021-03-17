@@ -36,7 +36,7 @@ const SearchResultsContainer = (props) => {
       <div
         className="nypl-results-summary no-scc-results drbb-integration"
       >
-        There are no results {displayContext(props)} from Shared Collection Catalog.
+        There are no results {displayContext(props)} from {appConfig.displayTitle}.
       </div>) : null;
 
   const hasResults = results && totalResults;
