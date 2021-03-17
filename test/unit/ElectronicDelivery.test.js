@@ -36,11 +36,11 @@ describe('ElectronicDeliveryForm', () => {
     let component;
     let appConfigMock;
     before(() => {
+      const store = makeTestStore({ features: ['on-site-edd'] });
       appConfigMock = mock(appConfig);
       appConfigMock.object.eddAboutUrl = {
         onSiteEdd: 'example.com/scan-and-deliver',
       };
-      const store = makeTestStore({ features: ['on-site-edd'] });
       component = mountTestRender(
         <ElectronicDelivery
           params={{ bibId: 'book1' }}

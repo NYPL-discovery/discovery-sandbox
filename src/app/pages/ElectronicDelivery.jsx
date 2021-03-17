@@ -217,9 +217,7 @@ class ElectronicDelivery extends React.Component {
       && this.props.patron.emails.length
     ) ? this.props.patron.emails[0] : '';
     const searchKeywords = this.props.searchKeywords;
-    const {
-      closedLocations, holdRequestNotification,
-    } = appConfig;
+    const { closedLocations } = appConfig;
 
     return (
       <SccContainer
