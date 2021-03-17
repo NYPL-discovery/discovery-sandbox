@@ -41,6 +41,7 @@ describe('ElectronicDeliveryForm', () => {
       appConfigMock.object.eddAboutUrl = {
         onSiteEdd: 'example.com/scan-and-deliver',
       };
+      appConfigMock.displayTitle = 'Research Catalog';
       component = mountTestRender(
         <ElectronicDelivery
           params={{ bibId: 'book1' }}
