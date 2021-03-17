@@ -9,7 +9,7 @@ import appConfig from '@appConfig';
 
 const {
   circulatingCatalog,
-  classicCatalog,
+  legacyCatalog,
 } = appConfig;
 
 
@@ -45,7 +45,7 @@ describe('Redirect404', () => {
 
   it('should have a  link to the legacy catalog', () => {
     expect(component.find('a').length).to.equal(2);
-    expect(component.find('a').at(0).prop('href')).to.equal(classicCatalog);
+    expect(component.find('a').at(0).prop('href')).to.equal(legacyCatalog);
     expect(component.find('a').at(0).text()).to.equal('Legacy Catalog');
   });
 

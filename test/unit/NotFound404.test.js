@@ -28,6 +28,6 @@ describe('NotFound404', () => {
   });
 
   it('should contain a link to the old catalog', () => {
-    expect(component.find('a').prop('href')).to.equal('http://catalog.nypl.org/');
+    expect(component.find('a').prop('href')).to.equal('https://legacycatalog.nypl.org');
   });
 });

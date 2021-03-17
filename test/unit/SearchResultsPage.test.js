@@ -149,11 +149,6 @@ describe('SearchResultsPage', () => {
       const storeWithProps = makeTestStore({
         searchKeywords: 'locofocos',
         searchResults,
-        appConfig: {
-          features: [],
-          displayTitle: 'Shared Collection Catalog',
-          baseUrl: '/',
-        },
       });
       wrapper = mountTestRender(
         <SearchResultsPage

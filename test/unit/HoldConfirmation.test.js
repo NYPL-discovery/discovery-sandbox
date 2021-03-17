@@ -604,8 +604,8 @@ describe('HoldConfirmation', () => {
       it('should have the link to shared collection catalog.', () => {
         const main = component.find('main');
 
-        expect(main.find('#go-to-shared-catalog').text())
-          .to.equal(' You may also try your search in our Shared Collection Catalog.');
+        expect(main.find('#go-to-research-catalog').text())
+          .to.equal(' You may also try your search in our Research Catalog.');
       });
     },
   );
