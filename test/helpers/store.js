@@ -37,16 +37,15 @@ export const mountTestRender = (ui, { store, ...otherOpts }) => testRender(
   { store, ...otherOpts },
 );
 
-export function makeTestStore(opts = initialState) {
+export function makeTestStore(state = {}) {
   const mockStore = configureStore([thunk]);
-  const store = mockStore({
+  return mockStore({
     ...initialState,
-    ...opts,
-    features: (opts.features || []),
+    ...state,
+    features: (state.features || []),
     appConfig: {
       ...initialState.appConfig,
-      ...opts.appConfig,
+      ...state.appConfig,
     },
   });
-  return store;
 }
