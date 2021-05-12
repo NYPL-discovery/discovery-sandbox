@@ -15,19 +15,21 @@ const SortButton = (props) => {
     active,
   } = props;
 
+  const columnText = {
+    bibs: 'Titles',
+    descendants: 'Subheadings',
+    alphabetical: 'Heading',
+  }[type];
+
+  if (!columnText) return null;
+
   const defaultSort = {
     alphabetical: 'ASC',
     bibs: 'DESC',
     descendants: 'DESC',
-  }[type]
+  }[type];
 
   const nextDirection = calculateDirection ? calculateDirection(type) : defaultSort;
-
-  const columnText = () => ({
-    bibs: 'Titles',
-    descendants: 'Subheadings',
-    alphabetical: 'Heading',
-  }[type]);
 
   const icon = () => {
     if (!active) return <DefaultIcon />;
@@ -42,7 +44,7 @@ const SortButton = (props) => {
       disabled={!handler || !interactive || numberOpen < 2}
     >
       <span className="emph">
-        <span className="noEmph">{columnText()}
+        <span className="noEmph">{columnText}
           {(handler && interactive) ? <span className="sortCharacter">{ icon() }</span> : null}
         </span>
       </span>
@@ -53,8 +55,10 @@ const SortButton = (props) => {
 SortButton.propTypes = {
   handler: PropTypes.func,
   type: PropTypes.string,
-  direction: PropTypes.string,
   interactive: PropTypes.bool,
+  numberOpen: PropTypes.number,
+  calculateDirection: PropTypes.func,
+  active: PropTypes.bool,
 };
 
 export default SortButton;

@@ -16,6 +16,7 @@ class SubjectHeading extends React.Component {
       sortBy,
       direction,
     } = this.props;
+    if (!subjectHeading) return;
     const {
       children,
       range,
@@ -39,6 +40,7 @@ class SubjectHeading extends React.Component {
       subjectHeading,
       preOpen,
     } = this.props;
+    if (!subjectHeading) return;
     if (preOpen || subjectHeading.preview) {
       this.fetchInitial();
     }
@@ -160,6 +162,8 @@ class SubjectHeading extends React.Component {
       container,
       location,
     } = this.props;
+
+    if (!subjectHeading) return null;
 
     const {
       pathname,

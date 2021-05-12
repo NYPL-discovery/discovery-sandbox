@@ -86,7 +86,7 @@ class SubjectHeadingSearch extends React.Component {
 
     return (
       /*
-        * if you need style the open state
+        * if you need to style the open state
         * add the `alwaysRenderSuggestions` prop
       */
       <Autosuggest

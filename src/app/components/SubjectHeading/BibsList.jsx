@@ -34,7 +34,13 @@ class BibsList extends React.Component {
   componentDidMount() {
     const stringifiedSortParams = `sort=${this.sort}&sort_direction=${this.sortDirection}&per_page=${this.perPage}&shep_bib_count=${this.props.shepBibCount}&shep_uuid=${this.props.uuid}`;
 
-    this.fetchBibs(stringifiedSortParams);
+    if (this.props.label) {
+      this.fetchBibs(stringifiedSortParams)
+    } else {
+      this.setState({
+        componentLoading: false,
+      });
+    };
   }
 
   fetchBibs(stringifiedSortParams, cb = () => {}) {
@@ -204,34 +210,37 @@ class BibsList extends React.Component {
     }
     const bibResults = bibsSource === 'discoveryApi' ? results : results.slice(this.firstBib(), this.lastBib());
 
-    const h3Text = `Viewing ${this.firstBib() + 1} - ${this.lastBib()} of ${totalResults || ''} items for Heading "${label}"`;
+    const h3Text = bibResults.length ? `Viewing ${this.firstBib() + 1} - ${this.lastBib()} of ${totalResults || ''} item${results.length === 1 ? '' : 's'} for Heading "${label}"` : '';
 
     return (
       <div
         className="nypl-column-half bibsList"
         aria-label="Titles related to this Subject Heading"
       >
-        <Sorter
-          page="shepBibs"
-          sortOptions={[
-            { val: 'date_desc', label: 'date (new to old)' },
-            { val: 'date_asc', label: 'date (old to new)' },
-            { val: 'title_asc', label: 'title (a - z)' },
-            { val: 'title_desc', label: 'title (z - a)' },
-          ]}
-          sortBy={`${sort}_${sortDirection}`}
-          updateResults={this.changeBibSorting}
-        />
-        <h3 id="titles">{h3Text}</h3>
         {
-          bibResults ?
-            <ResultsList results={bibResults} subjectHeadingShow />
-          :
-            <div className="nypl-column-half bibsList">
-              There are no titles for this subject heading.
-            </div>
-        }
-        {bibResults && bibResults.length > 0 ? this.pagination() : null}
+          bibResults && bibResults.length > 0 ?
+          (
+            <>
+              <Sorter
+                page="shepBibs"
+                sortOptions={[
+                  { val: 'date_desc', label: 'date (new to old)' },
+                  { val: 'date_asc', label: 'date (old to new)' },
+                  { val: 'title_asc', label: 'title (a - z)' },
+                  { val: 'title_desc', label: 'title (z - a)' },
+                ]}
+                sortBy={`${sort}_${sortDirection}`}
+                updateResults={this.changeBibSorting}
+              />
+              <h3 id="titles">{h3Text}</h3>
+              <ResultsList results={bibResults} subjectHeadingShow />
+              this.pagination()
+            </>
+          ) : (
+          <div className="nypl-column-half bibsList">
+            There are no titles for this subject heading.
+          </div>
+        )}
       </div>
     );
   }

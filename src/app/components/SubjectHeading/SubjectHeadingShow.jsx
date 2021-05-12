@@ -98,7 +98,7 @@ class SubjectHeadingShow extends React.Component {
 
   generateFullContextUrl() {
     const uuid = this.props.params.subjectHeadingUuid;
-    const path = this.props.location.pathname.replace(/\/subject_headings.*/, '');
+    const path = this.context.router.location.pathname.replace(/\/subject_headings.*/, '');
     return `${path}/subject_headings?linked=${uuid}`;
   }
 
@@ -142,7 +142,7 @@ class SubjectHeadingShow extends React.Component {
 
     const { uuid, label } = mainHeading;
 
-    const { location } = this.props;
+    const { location } = this.context.router;
 
     const linkUrl = contextHeadings && contextHeadings.length ? this.generateFullContextUrl() : '#';
 
@@ -189,7 +189,6 @@ class SubjectHeadingShow extends React.Component {
 }
 
 SubjectHeadingShow.propTypes = {
-  location: PropTypes.object,
   params: PropTypes.object,
   setBannerText: PropTypes.func,
 };

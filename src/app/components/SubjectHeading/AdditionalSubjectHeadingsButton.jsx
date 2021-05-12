@@ -7,15 +7,10 @@ class AdditionalSubjectHeadingsButton extends React.Component {
     super(props);
     this.state = {};
     this.onClick = this.onClick.bind(this);
-    this.hide = this.hide.bind(this);
   }
 
   onClick() {
     this.props.updateParent(this);
-  }
-
-  hide() {
-    this.setState({ hidden: true });
   }
 
   render() {
@@ -26,8 +21,6 @@ class AdditionalSubjectHeadingsButton extends React.Component {
       noEllipse,
       marginSize,
     } = this.props;
-
-    if (this.state.hidden) return null;
 
     const previous = this.props.button === 'previous';
 
@@ -103,6 +96,8 @@ AdditionalSubjectHeadingsButton.propTypes = {
   button: PropTypes.string,
   linkUrl: PropTypes.string,
   text: PropTypes.string,
+  noEllipse: PropTypes.bool,
+  marginSize: PropTypes.number,
 };
 
 export default AdditionalSubjectHeadingsButton;

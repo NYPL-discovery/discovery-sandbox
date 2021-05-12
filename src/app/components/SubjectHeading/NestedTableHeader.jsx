@@ -9,7 +9,6 @@ const NestedTableHeader = (props) => {
     indentation,
     sortBy,
     direction,
-    parentUuid,
     updateSort,
     numberOpen,
     interactive,
@@ -57,9 +56,15 @@ NestedTableHeader.propTypes = {
   indentation: PropTypes.number,
   sortBy: PropTypes.string,
   direction: PropTypes.string,
-  parentUuid: PropTypes.string,
   updateSort: PropTypes.func,
   interactive: PropTypes.bool,
+  numberOpen: PropTypes.number,
+  marginSize: PropTypes.number,
+};
+
+NestedTableHeader.defaultProps = {
+  // value used for desktop margins
+  marginSize: 30,
 };
 
 export default NestedTableHeader;

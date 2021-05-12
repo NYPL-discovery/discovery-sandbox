@@ -85,7 +85,6 @@ class Sorter extends React.Component {
 Sorter.propTypes = {
   sortBy: PropTypes.string,
   page: PropTypes.string,
-  updateSortValue: PropTypes.func,
 };
 
 Sorter.contextTypes = {
