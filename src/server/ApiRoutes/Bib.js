@@ -132,9 +132,12 @@ function fetchBib(bibId, cb, errorcb, reqOptions, res) {
     fetchSubjectHeadingData: true,
     features: [],
   }, reqOptions);
+  // Determine if it's an NYPL bibId by prefix:
+  const isNYPL = /^b/.test(bibId);
   return Promise.all([
     nyplApiClientCall(bibId, options.features, reqOptions.itemFrom || 0),
-    nyplApiClientCall(`${bibId}.annotated-marc`, options.features),
+    // Don't fetch annotated-marc for partner records:
+    isNYPL ? nyplApiClientCall(`${bibId}.annotated-marc`, options.features) : null,
   ])
     .then((response) => {
       // First response is jsonld formatting:

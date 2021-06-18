@@ -173,7 +173,8 @@ export const BibPage = (props, context) => {
 
   const additionalDetails = (<AdditionalDetailsViewer bib={bib} />);
 
-  const otherLibraries = ['Princeton University Library', 'Columbia University Libraries'];
+  // It's an NYPL item if getOwner returns nothing:
+  const isNYPL = !getOwner(bib);
 
   const tabs = [
     itemsContainer ? {
@@ -184,7 +185,7 @@ export const BibPage = (props, context) => {
       title: 'Details',
       content: tabDetails,
     },
-    !otherLibraries.includes(getOwner(bib)) && bib.annotatedMarc ? {
+    isNYPL && bib.annotatedMarc ? {
       title: 'Full Description',
       content: additionalDetails,
     } : null,
