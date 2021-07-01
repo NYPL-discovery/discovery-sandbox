@@ -9,6 +9,7 @@ import {
   parseServerSelectedFilters,
 } from '../../app/utils/utils';
 import extractFeatures from '../../app/utils/extractFeatures';
+import { buildQueryDataFromForm } from '../../app/utils/advancedSearchUtils';
 import nyplApiClient from '../routes/nyplApiClient';
 import logger from '../../../logger';
 import ResearchNow from './ResearchNow';
@@ -37,9 +38,12 @@ const nyplApiClientCall = (query, urlEnabledFeatures = []) => {
     );
 };
 
-function fetchResults(searchKeywords = '', page, sortBy, order, field, filters, cb, errorcb, features) {
+function fetchResults(searchKeywords = '', contributor, title, subject, page, sortBy, order, field, filters, cb, errorcb, features) {
   const encodedResultsQueryString = createAPIQuery({
     searchKeywords,
+    contributor,
+    title,
+    subject,
     sortBy: sortBy ? `${sortBy}_${order}` : '',
     selectedFilters: filters,
     field,
@@ -147,7 +151,7 @@ function fetchResults(searchKeywords = '', page, sortBy, order, field, filters, 
 }
 
 function search(req, res, resolve) {
-  const { page, q, sort, order, fieldQuery, filters } = getReqParams(req.query);
+  const { page, q, contributor, title, subject, sort, order, fieldQuery, filters } = getReqParams(req.query);
 
   const sortBy = sort.length ? [sort, order].filter(field => field.length).join('_') : 'relevance';
 
@@ -165,6 +169,9 @@ function search(req, res, resolve) {
 
   fetchResults(
     q,
+    contributor,
+    title,
+    subject,
     page,
     sort,
     order,
@@ -179,6 +186,9 @@ function search(req, res, resolve) {
       searchKeywords: q,
       sortBy,
       field: fieldQuery,
+      contributor,
+      title,
+      subject,
     }),
     error => resolve(error),
     urlEnabledFeatures,
@@ -186,6 +196,10 @@ function search(req, res, resolve) {
 }
 
 function searchServerPost(req, res) {
+  if (req.body.advancedSearch) {
+    return res.redirect(`${appConfig.baseUrl}/search?${createAPIQuery(buildQueryDataFromForm(Object.entries(req.body)))}`);
+  }
+
   const { fieldQuery, q, filters, sortQuery } = getReqParams(req.body);
   const { dateAfter, dateBefore } = req.body;
   // The filters from req.body may be an array of selected filters, or just an object

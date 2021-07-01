@@ -233,9 +233,28 @@ describe('ResultsCount', () => {
         it('should output that no results were found', () => {
           expect(component.find('h2').length).to.equal(1);
           expect(component.find('h2').text())
-            .to.equal('Displaying 1-50 of 6,789 results for subject "Children\'s art El Salvador"');
+            .to.equal('Displaying 1-50 of 6,789 results ');
         });
       });
+    });
+  });
+
+  describe('Advanced search', () => {
+    let component;
+
+    it('should display all the advanced search params', () => {
+      component = shallow(
+        <ResultsCount
+          count={100}
+          subject="ravens"
+          contributor="Poe"
+          title="The Raven"
+        />,
+      );
+
+      expect(component.find('h2').text()).to.equal(
+        'Displaying 1-50 of 100 results for Author: Poe and Title: The Raven and Subject: ravens',
+      );
     });
   });
 

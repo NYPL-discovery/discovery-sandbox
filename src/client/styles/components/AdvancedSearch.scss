@@ -1,0 +1,116 @@
+.advancedSearchContainer.content-primary {
+    min-height: 650px;
+}
+
+#advancedSearchAside {
+  color: #A4241E;
+  background-color: #F9F9F9;
+  width: 100%;
+  font-weight: 500;
+  font-size: 18px;
+  padding-top: 5px;
+  display: flex;
+  align-items: center;
+  img {
+    padding-right: 5px;
+  }
+}
+
+#advancedSearchHeading {
+  margin-top: 10px;
+  font-weight: 500;
+}
+
+#advancedSearchForm {
+  display: flex;
+  flex-direction: column;
+
+  input {
+    display: block;
+  }
+
+  li {
+    list-style: none;
+  }
+
+  hr {
+    width: 100%;
+    color: #C4C4C4;
+  }
+
+  #fields {
+    width: 100%;
+    display: flex;
+    @include media($mobile-breakpoint) {
+      display: block;
+    }
+  }
+
+  #advancedSearchButtons {
+    display: flex;
+    justify-content: flex-end;
+    width: 91%;
+
+    @include media($mobile-breakpoint) {
+      display: block;
+    }
+
+    button {
+      margin: 5px;
+      width: 139px;
+      @include media($mobile-breakpoint) {
+        width: 100%;
+      }
+    }
+  }
+
+  #formats {
+    display: flex;
+    border: none;
+    @include media($mobile-breakpoint) {
+      display: block;
+    }
+  }
+
+}
+
+.advancedSearchColumnLeft {
+  flex: 1;
+
+  ul {
+    width: 80%;
+  }
+}
+
+.advancedSearchColumnRight {
+  flex: 1;
+
+  ul {
+    width: 80%;
+  }
+
+  .checkbox {
+    align-items: center;
+    input {
+      min-width: 22px;
+      min-height: 22px;
+    }
+  }
+
+  #dateList {
+    display: flex;
+    justify-content: space-between;
+
+    li {
+      width: 40%;
+    }
+
+    #dateBefore-li::after {
+      content: 'E.g. 2000';
+    }
+
+    #dateAfter-li::after {
+      content: 'E.g. 1901';
+    }
+  }
+}

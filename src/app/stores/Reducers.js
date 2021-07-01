@@ -49,6 +49,12 @@ function appReducer(state = initialState, action) {
       return { ...state, resultSelection: action.payload };
     case Actions.SET_APP_CONFIG:
       return { ...state, appConfig };
+    case Actions.UPDATE_CONTRIBUTOR:
+      return { ...state, contributor: action.payload };
+    case Actions.UPDATE_SUBJECT:
+      return { ...state, subject: action.payload };
+    case Actions.UPDATE_TITLE:
+      return { ...state, title: action.payload };
     default:
       return state;
   }

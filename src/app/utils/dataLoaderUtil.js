@@ -53,6 +53,7 @@ const successCb = (pathType, dispatch) => (response) => {
     }
     return { redirect: true };
   }
+
   dispatch(routes[pathType].action(data));
   return data;
 };

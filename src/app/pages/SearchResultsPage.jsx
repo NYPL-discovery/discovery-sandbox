@@ -26,6 +26,9 @@ const SearchResults = (props, context) => {
     field,
     page,
     selectedFilters,
+    contributor,
+    title,
+    subject,
   } = useSelector(state => ({
     searchResults: state.searchResults,
     searchKeywords: state.searchKeywords,
@@ -33,6 +36,9 @@ const SearchResults = (props, context) => {
     field: state.field,
     page: state.page,
     selectedFilters: state.selectedFilters,
+    contributor: state.contributor,
+    title: state.title,
+    subject: state.subject,
   }));
 
   const {
@@ -51,6 +57,9 @@ const SearchResults = (props, context) => {
     sortBy,
     selectedFilters,
     field,
+    contributor,
+    title,
+    subject,
   });
   const dateFilterErrors = [];
   const searchError = location.query && location.query.error ? location.query.error : '';

@@ -14,6 +14,7 @@ import SubjectHeadingShowPage from '../pages/SubjectHeadingShowPage';
 import SubjectHeadingsIndexPage from '../pages/SubjectHeadingsIndexPage';
 import HoldConfirmation from '../pages/HoldConfirmation';
 import AccountPage from '../pages/AccountPage';
+import AdvancedSearch from '../components/AdvancedSearch/AdvancedSearch';
 
 /*
  * Components
@@ -31,6 +32,7 @@ const routes = {
   server: (
     <Route path="/" component={Application}>
       <IndexRoute component={Home} />
+      <Route path="/search/advanced" component={AdvancedSearch} />
       <Route path="/search" component={SearchResults} />
       <Route path="/bib/:bibId" component={BibPage} />
       <Route path="/bib/:bibId/all" component={BibPage} />
@@ -50,6 +52,7 @@ const routes = {
   client: (
     <Route path={`${baseUrl}/`} component={Application}>
       <IndexRoute component={Home} />
+      <Route path={`${baseUrl}/search/advanced`} component={AdvancedSearch} />
       <Route path={`${baseUrl}/search`} component={SearchResults} />
       <Route path={`${baseUrl}/bib/:bibId`} component={BibPage} />
       <Route path={`${baseUrl}/bib/:bibId/all`} component={BibPage} />

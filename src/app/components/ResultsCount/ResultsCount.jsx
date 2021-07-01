@@ -28,6 +28,9 @@ export class ResultsCount extends React.Component {
       searchKeywords,
       selectedFilters,
       field,
+      contributor,
+      title,
+      subject,
     } = this.props;
 
     const countF = count ? count.toLocaleString() : '';
@@ -35,7 +38,9 @@ export class ResultsCount extends React.Component {
     const end = (page) * 50 > count ? count : (page * 50);
     const currentResultDisplay = `${start}-${end}`;
 
-    const displayContextString = displayContext({ searchKeywords, selectedFilters, field, count });
+    const displayContextString = displayContext({
+      searchKeywords, contributor, title, subject, selectedFilters, field, count,
+    });
 
     if (count !== 0) {
       return `Displaying ${currentResultDisplay} of ${countF} results ${displayContextString}`;
@@ -81,6 +86,9 @@ ResultsCount.propTypes = {
   searchKeywords: PropTypes.string,
   field: PropTypes.string,
   features: PropTypes.array,
+  contributor: PropTypes.string,
+  title: PropTypes.string,
+  subject: PropTypes.string,
 };
 
 ResultsCount.defaultProps = {
@@ -96,9 +104,12 @@ ResultsCount.defaultProps = {
   features: [],
 };
 
-const mapStateToProps = ({ searchKeywords, page, features }) => ({
+const mapStateToProps = ({ searchKeywords, contributor, title, subject, page, features }) => ({
   features,
   searchKeywords,
+  contributor,
+  title,
+  subject,
   page,
 });
 

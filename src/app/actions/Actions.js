@@ -20,8 +20,25 @@ export const Actions = {
   UPDATE_ACCOUNT_HTML: 'UPDATE_ACCOUNT_HTML',
   UPDATE_FEATURES: 'UPDATE_FEATURES',
   UPDATE_RESULT_SELECTION: 'UPDATE_RESULT_SELECTION',
+  UPDATE_CONTRIBUTOR: 'UPDATE_CONTRIBUTOR',
+  UPDATE_TITLE: 'UPDATE_TITLE',
+  UPDATE_SUBJECT: 'UPDATE_SUBJECT',
 };
 
+export const updateContributor = contributor => ({
+  type: Actions.UPDATE_CONTRIBUTOR,
+  payload: contributor,
+});
+
+export const updateTitle = title => ({
+  type: Actions.UPDATE_TITLE,
+  payload: title,
+});
+
+export const updateSubject = subject => ({
+  type: Actions.UPDATE_SUBJECT,
+  payload: subject,
+});
 // Reset state except appConfig, patron, features
 export const resetState = () => ({
   type: Actions.RESET_STATE,
@@ -132,6 +149,9 @@ export const updateSearchResultsPage = data => dispatch => new Promise(() => {
     page,
     sortBy,
     field,
+    contributor,
+    title,
+    subject,
   } = data;
 
   dispatch(updateSearchResults(searchResults));
@@ -140,6 +160,9 @@ export const updateSearchResultsPage = data => dispatch => new Promise(() => {
   dispatch(updateSelectedFilters(selectedFilters));
   dispatch(updateField(field));
   dispatch(updateSearchKeywords(searchKeywords));
+  dispatch(updateContributor(contributor));
+  dispatch(updateSubject(subject));
+  dispatch(updateTitle(title));
   if (page) dispatch(updatePage(page));
   if (sortBy) dispatch(updateSortBy(sortBy));
   return data;

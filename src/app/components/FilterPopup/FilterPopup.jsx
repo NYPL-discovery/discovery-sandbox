@@ -618,7 +618,7 @@ const mapStateToProps = (state) => {
   return ({
     features,
     filters: apiFilters,
-    totalResults: searchResults.totalResults,
+    totalResults: searchResults ? searchResults.totalResults : 0,
     searchKeywords,
     selectedFilters,
   });

@@ -36,6 +36,9 @@ const initialState = {
     fromUrl: '',
     bibId: '',
   },
+  contributor: '',
+  title: '',
+  subject: '',
 };
 
 export default initialState;

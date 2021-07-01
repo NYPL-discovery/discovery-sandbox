@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Link } from 'react-router';
 
 import {
   Input,
@@ -106,6 +107,9 @@ class Search extends React.Component {
     }
 
     const apiQuery = this.props.createAPIQuery({
+      clearContributor: true,
+      clearSubject: true,
+      clearTitle: true,
       field,
       selectedFilters: this.props.selectedFilters,
       searchKeywords,
@@ -120,6 +124,7 @@ class Search extends React.Component {
 
   render() {
     return (
+
       <SearchBar
         id="mainContent"
         onSubmit={this.triggerSubmit}
@@ -129,32 +134,37 @@ class Search extends React.Component {
           action: `${appConfig.baseUrl}/search`,
         }}
       >
-        <Select
-          id="search-by-field"
-          onChange={this.onFieldChange}
-          selectedOption={this.state.field}
-          name="search_scope"
-        >
-          <option value="all">All fields</option>
-          <option value="title">Title</option>
-          <option value="journal_title">Journal Title</option>
-          <option value="contributor">Author/Contributor</option>
-          <option value="standard_number">Standard Numbers</option>
-          <option value="subject">Subject</option>
-        </Select>
-        <Input
-          type="text"
-          id="search-query"
-          aria-label="Search by keyword, title, journal title, or author/contributor"
-          aria-controls="results-description"
-          placeholder="Keyword, title, journal title, or author/contributor"
-          onChange={this.inputChange}
-          value={this.state.searchKeywords}
-          name="q"
-        />
-        <SearchButton
-          onClick={this.submitSearchRequest}
-        />
+        <div id="search-container">
+          <Select
+            id="search-by-field"
+            onChange={this.onFieldChange}
+            selectedOption={this.state.field}
+            name="search_scope"
+            >
+            <option value="all">All fields</option>
+            <option value="title">Title</option>
+            <option value="journal_title">Journal Title</option>
+            <option value="contributor">Author/Contributor</option>
+            <option value="standard_number">Standard Numbers</option>
+            <option value="subject">Subject</option>
+          </Select>
+          <Input
+            type="text"
+            id="search-query"
+            aria-label="Search by keyword, title, journal title, or author/contributor"
+            aria-controls="results-description"
+            placeholder="Keyword, title, journal title, or author/contributor"
+            onChange={this.inputChange}
+            value={this.state.searchKeywords}
+            name="q"
+          />
+          <SearchButton
+            onClick={this.submitSearchRequest}
+          />
+        </div>
+        <div id="advanced-search-link-container">
+          <a href={`${appConfig.baseUrl}/search/advanced`}>Advanced Search</a>
+        </div>
       </SearchBar>
     );
   }
