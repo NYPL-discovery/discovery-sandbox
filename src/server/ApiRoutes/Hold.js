@@ -211,65 +211,66 @@ function confirmRequestServer(req, res, next) {
     .then((response) => {
       const patronIdFromHoldRequest = response.data.patron;
 
-      // The patron who is seeing the confirmation made the Hold Request
-      if (patronIdFromHoldRequest === patronId) {
-        // Retrieve item
-        return Bib.fetchBib(
-          bibId,
-          (bibResponseData) => {
-            const { bib } = bibResponseData;
-            barcode = LibraryItem.getItem(bib, req.params.itemId).barcode;
-            getDeliveryLocations(
-              barcode,
-              patronId,
-              (deliveryLocations, isEddRequestable) => {
-                dispatch(updateHoldRequestPage({
-                  bib,
-                  deliveryLocations,
-                  isEddRequestable,
-                  searchKeywords,
-                }));
-                next();
-              },
-              (deliveryLocationError) => {
-                logger.error(
-                  'Error retrieving server side delivery locations in confirmRequestServer' +
-                  `, bibId: ${bibId}`,
-                  deliveryLocationError,
-                );
-
-                dispatch(updateHoldRequestPage({
-                  bib,
-                  searchKeywords,
-                  error,
-                  deliveryLocations: [],
-                  isEddRequestable: false,
-                }));
-                next();
-              },
-            );
-          },
-          (bibResponseError) => {
-            logger.error(
-              `Error retrieving server side bib record in confirmRequestServer, id: ${bibId}`,
-              bibResponseError,
-            );
-            dispatch(updateHoldRequestPage({
-              bib: {},
-              searchKeywords,
-              error,
-              deliveryLocations: [],
-            }));
-            next();
-          },
-          {
-            fetchSubjectHeadingData: false,
-            features: urlEnabledFeatures,
-          },
-        );
+      // The patron who is seeing the confirmation did not make the Hold Request
+      if (patronIdFromHoldRequest !== patronId) {
+        res.status(404).redirect(`${appConfig.baseUrl}/404`);
+        return false;
       }
 
-      return false;
+      // Retrieve item
+      return Bib.fetchBib(
+        bibId,
+        (bibResponseData) => {
+          const { bib } = bibResponseData;
+          barcode = LibraryItem.getItem(bib, req.params.itemId).barcode;
+          getDeliveryLocations(
+            barcode,
+            patronId,
+            (deliveryLocations, isEddRequestable) => {
+              dispatch(updateHoldRequestPage({
+                bib,
+                deliveryLocations,
+                isEddRequestable,
+                searchKeywords,
+              }));
+              next();
+            },
+            (deliveryLocationError) => {
+              logger.error(
+                'Error retrieving server side delivery locations in confirmRequestServer' +
+                `, bibId: ${bibId}`,
+                deliveryLocationError,
+              );
+
+              dispatch(updateHoldRequestPage({
+                bib,
+                searchKeywords,
+                error,
+                deliveryLocations: [],
+                isEddRequestable: false,
+              }));
+              next();
+            },
+          );
+        },
+        (bibResponseError) => {
+          logger.error(
+            `Error retrieving server side bib record in confirmRequestServer, id: ${bibId}`,
+            bibResponseError,
+          );
+          dispatch(updateHoldRequestPage({
+            bib: {},
+            searchKeywords,
+            error,
+            deliveryLocations: [],
+          }));
+          next();
+        },
+        {
+          fetchSubjectHeadingData: false,
+          features: urlEnabledFeatures,
+        },
+      );
     })
     .catch((requestIdError) => {
       logger.error(
